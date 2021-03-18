@@ -29,7 +29,7 @@ meshx plate.msh
 Install the repository in editable mode for development. Go to the root folder containing `setup.py` and run the following in terminal.
 
 ```bash
-pip install -e .
+sudo -H pip install -e .
 ```
 
 ## Authors
