@@ -1,6 +1,6 @@
 # meshx
 
-A simple tool to convert mesh created from Gmsh to XDMF for use in FEniCS
+A simple tool to convert mesh created from Gmsh to XDMF for use in FEniCS. This work is derived from the work done during my [GSoC project](https://github.com/iitrabhi/GSoC2019) and is based on the following [snippet of code](https://gist.github.com/michalhabera/bbe8a17f788192e53fd758a67cbf3bed) made by [Michal Habera](https://github.com/michalhabera).
 
 ## Getting Started
 
@@ -11,7 +11,7 @@ To use this tool you have to use the docker image [provided here](https://github
 You can install this with the following commands:
 
 ```
-pip install meshx
+sudo -H pip install meshx
 ```
 
 ## Running
@@ -29,8 +29,8 @@ cd demo/poisson_problem
 meshx plate.msh
 ```
 This command will give you 2 folders -  
-1. This folder will contain the data that we will use in the script i.e, the XDMF files for different entities of mesh and the JSON file containing the corresponding tag names and tag values.
-2. This folder will contain the XDMF files of different subdomains marked. These files can be visualised in Paraview for validating the correctness of the marked subdomain.
+1. mesh - This folder will contain the data that we will use in the script i.e, the XDMF files for different entities of mesh and the JSON file containing the corresponding tag names and tag values.
+2. sub_domains - This folder will contain the XDMF files of different subdomains marked. These files can be visualised in Paraview for validating the correctness of the marked subdomain.
 
 
 ```

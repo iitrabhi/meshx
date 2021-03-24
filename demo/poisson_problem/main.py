@@ -11,7 +11,7 @@ with XDMFFile("mesh/triangle.xdmf") as infile:
 mvc_1 = MeshValueCollection("size_t", mesh, 1)
 mvc_2 = MeshValueCollection("size_t", mesh, 2)
 
-f = open('boundaries/tags.json',) 
+f = open('mesh/tags.json') 
 tags = json.load(f)
 
 with XDMFFile("mesh/line.xdmf") as infile:
@@ -19,14 +19,14 @@ with XDMFFile("mesh/line.xdmf") as infile:
     infile.read(mvc_1, "tag")
 
 print("Constructing MeshFunction from MeshValueCollection")
-mf1 = cpp.mesh.MeshFunctionSizet(mesh, mvc_1)
+boundaries = cpp.mesh.MeshFunctionSizet(mesh, mvc_1)
 
 with XDMFFile("mesh/triangle.xdmf") as infile:
     print("Reading 2d surface data into dolfin mvc")
     infile.read(mvc_2, "tag")
 
 print("Constructing MeshFunction from MeshValueCollection")
-mf2 = cpp.mesh.MeshFunctionSizet(mesh, mvc_2)
+domains = cpp.mesh.MeshFunctionSizet(mesh, mvc_2)
 
 
 
@@ -43,13 +43,13 @@ u = TrialFunction(V)
 v = TestFunction(V)
 
 # Define Dirichlet boundary conditions at top and bottom boundaries
-bcs = [DirichletBC(V, 5.0, mf1, tags['Top']),
-       DirichletBC(V, 0.0, mf1, tags['Bottom'])]
+bcs = [DirichletBC(V, 5.0, boundaries, tags['Top']),
+       DirichletBC(V, 0.0, boundaries, tags['Bottom'])]
 
 # Define new measures associated with the interior domains and
 # exterior boundaries
-dx = Measure("dx")(subdomain_data=mf2)
-ds = Measure("ds")(subdomain_data=mf1)
+dx = Measure("dx")(subdomain_data=domains)
+ds = Measure("ds")(subdomain_data=boundaries)
 
 # Define variational form
 F = (inner(a0*grad(u), grad(v))*dx(tags['Domain']) + inner(a1*grad(u), grad(v))*dx(tags['Obstacle'])

@@ -9,7 +9,7 @@ from tabulate import tabulate
 def write(args):
     converter = Converter(args.infile)
     converter.write_mesh()
-    converter.write_boundaries()
+    converter.write_sub_domains()
     pass
 
 
@@ -23,8 +23,8 @@ class Converter:
         # Save the primary mesh in directory named mesh in the current folder.
         if not os.path.exists("mesh"):
             os.makedirs("mesh")
-        if not os.path.exists('boundaries'):
-            os.makedirs('boundaries')   
+        if not os.path.exists('sub_domains'):
+            os.makedirs('sub_domains')   
 
         try:
             self.msh = meshio.read(infile)
@@ -48,7 +48,7 @@ class Converter:
         except:
             print("There was some error 😱")
 
-    def write_boundaries(self):
+    def write_sub_domains(self):
         mesh_functions = [None, None, None, None]
         vertex_tags = {}
         line_tags = {}
@@ -65,16 +65,16 @@ class Converter:
             tag_dicts[dim][field] = tag
             all_tags[field] = tag
 
-        with open("boundaries/tags.json", "w") as outfile:
+        with open("mesh/tags.json", "w") as outfile:
             json.dump(all_tags, outfile)
         # Create a mesh function corresponding to each tag
         # before this it is necessary to load mesh
         dim = 0
         mf_name = [
-            "boundaries/vertex_boundaries.xdmf",
-            "boundaries/line_boundaries.xdmf",
-            "boundaries/triangle_boundaries.xdmf",
-            "boundaries/tetra_boundaries.xdmf"
+            "sub_domains/vertex_sub_domains.xdmf",
+            "sub_domains/line_sub_domains.xdmf",
+            "sub_domains/triangle_sub_domains.xdmf",
+            "sub_domains/tetra_sub_domains.xdmf"
         ]
         mesh_name = ["mesh/vertex.xdmf", "mesh/line.xdmf", "mesh/triangle.xdmf", "mesh/tetra.xdmf"]
         for entity_tag_dict in tag_dicts:
