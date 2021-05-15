@@ -4,6 +4,7 @@ from dolfin import *
 import subprocess, os, platform
 import sys
 from tabulate import tabulate
+import numpy as np
 
 
 def write(args):
@@ -37,7 +38,8 @@ class Converter:
 
     def write_mesh(self):
         try:
-            meshio_point = self.msh.points[:, :]
+            dim = max([int(x) for x in np.array(self.tag_list)[:,2]])
+            meshio_point = self.msh.points[:, :dim]
             for entity in self.msh.cell_data.keys():
                 print("Creating", entity, "mesh")
                 meshio_cell = {entity: self.msh.cells[entity]}
